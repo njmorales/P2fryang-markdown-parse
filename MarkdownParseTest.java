@@ -99,4 +99,5 @@ public class MarkdownParseTest {
 	assertEquals(expect, MarkdownParse.getLinks(contents));
     }
     
+    
 }
