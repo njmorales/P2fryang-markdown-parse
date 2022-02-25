@@ -4,6 +4,14 @@ import org.junit.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;import static org.junit.Assert.*;
+import org.junit.*;
+
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.nio.file.Path;
 import java.util.List;
 
 public class MarkdownParseTest {
@@ -99,5 +107,32 @@ public class MarkdownParseTest {
 	assertEquals(expect, MarkdownParse.getLinks(contents));
     }
     
+    HashMap<String, ArrayList<String>> fileMap;
     
+    @Before
+    public void setupMap() {
+        fileMap = new HashMap<>();
+        fileMap.put("test-file1.md", new ArrayList<String>(Arrays.asList("https://something.com", "some-page.html")));
+        fileMap.put("test-file2.md", new ArrayList<String>(Arrays.asList()));
+        fileMap.put("test-file3.md", new ArrayList<String>(Arrays.asList()));
+        fileMap.put("test-file4.md", new ArrayList<String>(Arrays.asList()));
+        fileMap.put("snippet1.md", new ArrayList<String>(Arrays.asList("`google.com", "google.com", "ucsd.edu")));
+        fileMap.put("snippet2.md", new ArrayList<String>(Arrays.asList("a.com", "a.com(())", "example.com")));
+        fileMap.put("snippet3.md", new ArrayList<String>(Arrays.asList("https://ucsd-cse15l-w22.github.io/")));
+    }
+
+    @Test
+    public void testSnippet1() throws Exception {
+        assertEquals(fileMap.get("snippet1.md"), MarkdownParse.getLinks(Files.readString(Path.of("snippet1.md"))));
+    }
+
+    @Test
+    public void testSnippet2() throws Exception {
+        assertEquals(fileMap.get("snippet2.md"), MarkdownParse.getLinks(Files.readString(Path.of("snippet2.md"))));
+    }
+
+    @Test
+    public void testSnippet3() throws Exception {
+        assertEquals(fileMap.get("snippet3.md"), MarkdownParse.getLinks(Files.readString(Path.of("snippet3.md"))));
+    }
 }
